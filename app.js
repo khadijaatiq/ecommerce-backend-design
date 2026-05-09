@@ -1,25 +1,25 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
-// Template engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 // Middleware
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: 'http://localhost:5173' // React frontend URL
+}));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Routes
-const indexRouter = require('./routes/index');
-app.use('/', indexRouter);
+// Test route
+app.get('/', (req, res) => {
+    res.json({ message: 'Ecommerce API is running!' });
+});
 
 // 404 handler
 app.use((req, res) => {
-    res.status(404).render('404', { title: 'Page Not Found' });
+    res.status(404).json({ error: 'Route not found' });
 });
 
 // Start server
