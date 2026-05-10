@@ -1,16 +1,19 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:5173' // React frontend URL
+    origin: 'http://localhost:5173'
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
+const productsRouter = require('./routes/products');
+app.use('/api/products', productsRouter);
 
 // Test route
 app.get('/', (req, res) => {
