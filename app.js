@@ -2,7 +2,11 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const connectDB = require('./config/db');
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(cors({
@@ -13,7 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const productsRouter = require('./routes/products');
+const authRouter = require('./routes/auth');
+
 app.use('/api/products', productsRouter);
+app.use('/api/auth', authRouter);
 
 // Test route
 app.get('/', (req, res) => {
@@ -30,5 +37,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
-const connectDB = require('./config/db');
-connectDB();
